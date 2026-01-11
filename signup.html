@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NyayaSulabh - Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    :root {
+      --navy-dark: #1A2D4E;
+      --navy-medium: #2A3F65;
+      --gold-primary: #EBB255;
+      --gold-light: #F0B44C;
+      --gray-soft: #5A6169;
+      --gray-light: #D1D5DB;
+      --white: #FFFFFF;
+      --off-white: #F4F6F8;
+      --success: #0F9D58;
+      --error: #DB4437;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --radius: 12px;
+    }
+
+    body {
+      background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
+      color: var(--navy-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background Decoration */
+    .bg-decoration {
+      position: absolute;
+      z-index: 0;
+    }
+
+    .bg-1 {
+      top: 5%;
+      left: 10%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(235, 178, 85, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .bg-2 {
+      bottom: 5%;
+      right: 10%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(26, 45, 78, 0.04) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* Sign Up Container */
+    .signup-container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 10;
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    /* Logo Section */
+    .logo-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--navy-dark);
+      margin-bottom: 15px;
+    }
+
+    .logo-circle {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy-medium));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(26, 45, 78, 0.2);
+      transition: var(--transition);
+    }
+
+    .logo-link:hover .logo-circle {
+      transform: rotate(5deg) scale(1.05);
+    }
+
+    .logo-text {
+      text-align: left;
+    }
+
+    .logo-title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .logo-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gold-primary);
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .welcome-text h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .welcome-text h1:after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--gold-primary);
+      border-radius: 2px;
+    }
+
+    .welcome-text p {
+      font-size: 16px;
+      color: var(--gray-soft);
+      margin-top: 20px;
+      line-height: 1.6;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Sign Up Card */
+    .signup-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 40px 35px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(235, 178, 85, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .signup-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
+    }
+
+    /* Progress Steps */
+    .signup-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .signup-steps:before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 50px;
+      right: 50px;
+      height: 2px;
+      background: rgba(26, 45, 78, 0.1);
+      z-index: 1;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid rgba(26, 45, 78, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-soft);
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+
+    .step.active .step-circle {
+      background: var(--gold-primary);
+      border-color: var(--gold-primary);
+      color: var(--white);
+    }
+
+    .step.completed .step-circle {
+      background: var(--success);
+      border-color: var(--success);
+      color: var(--white);
+    }
+
+    .step.completed .step-circle:after {
+      content: '✓';
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-soft);
+      text-align: center;
+    }
+
+    .step.active .step-label {
+      color: var(--navy-dark);
+    }
+
+    /* Form Styles */
+    .signup-form {
+      margin-top: 20px;
+    }
+
+    .form-section {
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-label i {
+      color: var(--gold-primary);
+      font-size: 14px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(26, 45, 78, 0.1);
+      border-radius: 10px;
+      font-size: 15px;
+      color: var(--navy-dark);
+      background: var(--off-white);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold-primary);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(235, 178, 85, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--gray-light);
+      font-size: 14px;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      background: none;
+      border: none;
+      color: var(--gray-soft);
+      cursor: pointer;
+      font-size: 16px;
+      transition: var(--transition);
+    }
+
+    .password-toggle:hover {
+      color: var(--gold-primary);
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 8px;
+    }
+
+    .strength-meter {
+      height: 6px;
+      background: rgba(26, 45, 78, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .strength-fill.weak {
+      background: var(--error);
+      width: 33%;
+    }
+
+    .strength-fill.medium {
+      background: #F4B400;
+      width: 66%;
+    }
+
+    .strength-fill.strong {
+      background: var(--success);
+      width: 100%;
+    }
+
+    .strength-text {
+      font-size: 12px;
+      color: var(--gray-soft);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* User Type Selection */
+    .user-type-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .user-type-option {
+      border: 2px solid rgba(26, 45, 78, 0.1);
+      border-radius: 10px;
+      padding: 20px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--white);
+    }
+
+    .user-type-option:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-type-option.selected {
+      border-color: var(--gold-primary);
+      background: rgba(235, 178, 85, 0.05);
+      box-shadow: 0 5px 15px rgba(235, 178, 85, 0.1);
+    }
+
+    .user-type-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(235, 178, 85, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-primary);
+      font-size: 20px;
+      margin: 0 auto 12px;
+    }
+
+    .user-type-option.selected .user-type-icon {
+      background: var(--gold-primary);
+      color: var(--white);
+    }
+
+    .user-type-label {
+      font-weight: 600;
+      color: var(--navy-dark);
+      margin-bottom: 5px;
+    }
+
+    .user-type-desc {
+      font-size: 12px;
+      color: var(--gray-soft);
+      line-height: 1.4;
+    }
+
+    /* Terms and Conditions */
+    .terms-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 25px 0;
+      padding: 15px;
+      background: rgba(26, 45, 78, 0.02);
+      border-radius: 8px;
+    }
+
+    .terms-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(26, 45, 78, 0.2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 3px;
+      flex-shrink: 0;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .terms-checkbox.checked {
+      background: var(--gold-primary);
+      border-color: var(--gold-primary);
+    }
+
+    .terms-checkbox.checked i {
+      color: var(--white);
+      font-size: 12px;
+    }
+
+    .terms-text {
+      font-size: 14px;
+      color: var(--gray-soft);
+      line-height: 1.5;
+    }
+
+    .terms-link {
+      color: var(--gold-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .terms-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Form Navigation */
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(26, 45, 78, 0.1);
+    }
+
+    .nav-button {
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 120px;
+    }
+
+    .btn-back {
+      background: transparent;
+      color: var(--gray-soft);
+      border: 2px solid rgba(26, 45, 78, 0.1);
+    }
+
+    .btn-back:hover {
+      border-color: var(--gold-primary);
+      color: var(--navy-dark);
+    }
+
+    .btn-next,
+    .btn-submit {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy-medium));
+      color: var(--white);
+      border: none;
+      box-shadow: 0 8px 20px rgba(26, 45, 78, 0.2);
+    }
+
+    .btn-next:hover,
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(26, 45, 78, 0.3);
+      background: linear-gradient(135deg, var(--navy-medium), var(--navy-dark));
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--success), #0F9D58);
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #0F9D58, var(--success));
+    }
+
+    /* Error/Success Messages */
+    .message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      display: none;
+    }
+
+    .message.show {
+      display: flex;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .error-message {
+      background: rgba(219, 68, 55, 0.1);
+      border: 1px solid rgba(219, 68, 55, 0.2);
+      color: var(--error);
+    }
+
+    .success-message {
+      background: rgba(15, 157, 88, 0.1);
+      border: 1px solid rgba(15, 157, 88, 0.2);
+      color: var(--success);
+    }
+
+    /* Login Link */
+    .login-section {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(26, 45, 78, 0.1);
+    }
+
+    .login-text {
+      color: var(--gray-soft);
+      font-size: 15px;
+    }
+
+    .login-link {
+      color: var(--gold-primary);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 5px;
+      transition: var(--transition);
+    }
+
+    .login-link:hover {
+      color: var(--navy-dark);
+      text-decoration: underline;
+    }
+
+    /* Back to Home */
+    .back-home {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .back-link {
+      color: var(--gray-soft);
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      color: var(--gold-primary);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .signup-card {
+        padding: 30px 25px;
+      }
+      
+      .welcome-text h1 {
+        font-size: 28px;
+      }
+      
+      .user-type-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      
+      .signup-steps:before {
+        left: 30px;
+        right: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .signup-card {
+        padding: 25px 20px;
+      }
+      
+      .logo-title {
+        font-size: 24px;
+      }
+      
+      .welcome-text h1 {
+        font-size: 24px;
+      }
+      
+      .nav-button {
+        padding: 12px 20px;
+        min-width: 100px;
+        font-size: 14px;
+      }
+      
+      .signup-steps:before {
+        left: 20px;
+        right: 20px;
+      }
+      
+      .step-label {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Decorations -->
+  <div class="bg-decoration bg-1"></div>
+  <div class="bg-decoration bg-2"></div>
+
+  <!-- Sign Up Container -->
+  <div class="signup-container">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <a href="index.html" class="logo-link">
+        <div class="logo-circle">NS</div>
+        <div class="logo-text">
+          <div class="logo-title">NyayaSulabh</div>
+          <div class="logo-subtitle">ACCESSIBLE JUSTICE</div>
+        </div>
+      </a>
+      
+      <div class="welcome-text">
+        <h1>Create Account</h1>
+        <p>Join NyayaSulabh to simplify legal documents with AI-powered analysis</p>
+      </div>
+    </div>
+
+    <!-- Error/Success Messages -->
+    <div class="message error-message" id="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="errorText">Please fill in all required fields correctly.</span>
+    </div>
+
+    <div class="message success-message" id="successMessage">
+      <i class="fas fa-check-circle"></i>
+      <span id="successText">Account created successfully!</span>
+    </div>
+
+    <!-- Sign Up Card -->
+    <div class="signup-card">
+      <!-- Progress Steps -->
+      <div class="signup-steps">
+        <div class="step active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Personal Info</div>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Account Type</div>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Create Account</div>
+        </div>
+      </div>
+
+      <!-- Multi-Step Form -->
+      <form class="signup-form" id="signupForm">
+        <!-- Step 1: Personal Information -->
+        <div class="form-section active" data-step="1">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                First Name
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="firstName" 
+                placeholder="Enter your first name"
+                required
+              >
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                Last Name
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="lastName" 
+                placeholder="Enter your last name"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-envelope"></i>
+              Email Address
+            </label>
+            <input 
+              type="email" 
+              class="form-input" 
+              id="email" 
+              placeholder="Enter your email address"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-phone"></i>
+              Phone Number
+            </label>
+            <input 
+              type="tel" 
+              class="form-input" 
+              id="phone" 
+              placeholder="Enter your phone number"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-map-marker-alt"></i>
+              Country
+            </label>
+            <select class="form-input" id="country" required>
+              <option value="">Select your country</option>
+              <option value="IN">India</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="JP">Japan</option>
+              <option value="SG">Singapore</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 2: Account Type -->
+        <div class="form-section" data-step="2">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-user-tag"></i>
+              I am signing up as a
+            </label>
+            <div class="user-type-options">
+              <div class="user-type-option" data-type="individual">
+                <div class="user-type-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="user-type-label">Individual</div>
+                <div class="user-type-desc">For personal legal document analysis</div>
+              </div>
+              
+              <div class="user-type-option" data-type="lawyer">
+                <div class="user-type-icon">
+                  <i class="fas fa-gavel"></i>
+                </div>
+                <div class="user-type-label">Legal Professional</div>
+                <div class="user-type-desc">For lawyers and legal practitioners</div>
+              </div>
+              
+              <div class="user-type-option" data-type="business">
+                <div class="user-type-icon">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div class="user-type-label">Business</div>
+                <div class="user-type-desc">For corporate legal document needs</div>
+              </div>
+              
+              <div class="user-type-option" data-type="ngo">
+                <div class="user-type-icon">
+                  <i class="fas fa-hands-helping"></i>
+                </div>
+                <div class="user-type-label">NGO / Non-profit</div>
+                <div class="user-type-desc">For organizations serving communities</div>
+              </div>
+            </div>
+            <input type="hidden" id="userType" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-briefcase"></i>
+              Organization (Optional)
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="organization" 
+              placeholder="Enter your organization name"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-id-card"></i>
+              Profession
+            </label>
+            <input 
+              type="text" 
+              class="form-input" 
+              id="profession" 
+              placeholder="Enter your profession"
+            >
+          </div>
+        </div>
+
+        <!-- Step 3: Create Account -->
+        <div class="form-section" data-step="3">
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-lock"></i>
+              Create Password
+            </label>
+            <input 
+              type="password" 
+              class="form-input" 
+              id="password" 
+              placeholder="Create a strong password"
+              required
+            >
+            <button type="button" class="password-toggle" id="togglePassword">
+              <i class="fas fa-eye"></i>
+            </button>
+            
+            <div class="password-strength">
+              <div class="strength-meter">
+                <div class="strength-fill" id="strengthFill"></div>
+              </div>
+              <div class="strength-text">
+                <span>Password strength:</span>
+                <span id="strengthText">None</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-lock"></i>
+              Confirm Password
+            </label>
+            <input 
+              type="password" 
+              class="form-input" 
+              id="confirmPassword" 
+              placeholder="Re-enter your password"
+              required
+            >
+            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+
+          <div class="terms-group">
+            <div class="terms-checkbox" id="termsCheckbox">
+              <i class="fas fa-check"></i>
+            </div>
+            <div class="terms-text">
+              I agree to the <a href="#" class="terms-link" id="termsLink">Terms of Service</a> and <a href="#" class="terms-link" id="privacyLink">Privacy Policy</a>. I understand that NyayaSulabh will process my information in accordance with these policies.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <i class="fas fa-bell"></i>
+              Email Preferences
+            </label>
+            <div class="terms-group" style="margin: 10px 0;">
+              <div class="terms-checkbox" id="newsletterCheckbox">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="terms-text">
+                I want to receive updates, newsletters, and announcements about new features and legal insights from NyayaSulabh.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Navigation -->
+        <div class="form-navigation">
+          <button type="button" class="nav-button btn-back" id="btnBack">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </button>
+          
+          <button type="button" class="nav-button btn-next" id="btnNext">
+            Next Step
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          
+          <button type="submit" class="nav-button btn-submit" id="btnSubmit" style="display: none;">
+            <i class="fas fa-user-plus"></i>
+            Create Account
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Login Link -->
+    <div class="login-section">
+      <span class="login-text">Already have an account?</span>
+      <a href="login.html" class="login-link">Sign In</a>
+    </div>
+
+    <!-- Back to Home Link -->
+    <div class="back-home">
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Homepage
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const signupForm = document.getElementById('signupForm');
+    const formSections = document.querySelectorAll('.form-section');
+    const steps = document.querySelectorAll('.step');
+    const btnBack = document.getElementById('btnBack');
+    const btnNext = document.getElementById('btnNext');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const userTypeOptions = document.querySelectorAll('.user-type-option');
+    const userTypeInput = document.getElementById('userType');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const togglePassword = document.getElementById('togglePassword');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const newsletterCheckbox = document.getElementById('newsletterCheckbox');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthText = document.getElementById('strengthText');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    
+    // Form State
+    let currentStep = 1;
+    const totalSteps = 3;
+    const formData = {
+      personal: {},
+      account: {},
+      security: {}
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if already logged in
+      if (localStorage.getItem('nyayaSession')) {
+        window.location.href = 'interface.html';
+        return;
+      }
+
+      updateNavigation();
+      
+      // Load saved form data from localStorage if exists
+      const savedFormData = localStorage.getItem('nyayasulabhSignupData');
+      if (savedFormData) {
+        Object.assign(formData, JSON.parse(savedFormData));
+        populateFormData();
+      }
+    });
+
+    // Password Strength Checker
+    passwordInput.addEventListener('input', function() {
+      const password = this.value;
+      const strength = checkPasswordStrength(password);
+      
+      // Update strength indicator
+      strengthFill.className = 'strength-fill';
+      strengthFill.classList.add(strength.level);
+      
+      // Update text
+      strengthText.textContent = strength.text;
+      strengthText.style.color = strength.color;
+    });
+
+    // Password Visibility Toggle
+    togglePassword.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      const icon = this.querySelector('i');
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    });
+
+    toggleConfirmPassword.addEventListener('click', function() {
+      const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPasswordInput.setAttribute('type', type);
+      
+      const icon = this.querySelector('i');
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    });
+
+    // User Type Selection
+    userTypeOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove selected class from all options
+        userTypeOptions.forEach(opt => opt.classList.remove('selected'));
+        
+        // Add selected class to clicked option
+        this.classList.add('selected');
+        
+        // Update hidden input
+        const userType = this.getAttribute('data-type');
+        userTypeInput.value = userType;
+        
+        // Save to form data
+        formData.account.userType = userType;
+        saveFormData();
+      });
+    });
+
+    // Terms Checkboxes
+    termsCheckbox.addEventListener('click', function() {
+      this.classList.toggle('checked');
+      formData.security.termsAccepted = this.classList.contains('checked');
+      saveFormData();
+    });
+
+    newsletterCheckbox.addEventListener('click', function() {
+      this.classList.toggle('checked');
+      formData.security.newsletterSubscribed = this.classList.contains('checked');
+      saveFormData();
+    });
+
+    // Terms and Privacy Links
+    document.getElementById('termsLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      alert('Terms of Service would be displayed here in a real application.');
+    });
+
+    document.getElementById('privacyLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      alert('Privacy Policy would be displayed here in a real application.');
+    });
+
+    // Navigation Buttons
+    btnNext.addEventListener('click', function() {
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateFormDisplay();
+          updateNavigation();
+        }
+      }
+    });
+
+    btnBack.addEventListener('click', function() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateFormDisplay();
+        updateNavigation();
+      }
+    });
+
+    // Form Submission
+    signupForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (validateStep(currentStep) && validateAllSteps()) {
+        if (!termsCheckbox.classList.contains('checked')) {
+          showError('You must accept the Terms of Service and Privacy Policy to continue.');
+          return;
+        }
+        
+        // Collect all form data
+        collectFormData();
+        
+        // Simulate API call
+        simulateSignup();
+      }
+    });
+
+    // Helper Functions
+    function updateFormDisplay() {
+      // Hide all form sections
+      formSections.forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show current form section
+      document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.add('active');
+      
+      // Update progress steps
+      steps.forEach(step => {
+        const stepNum = parseInt(step.getAttribute('data-step'));
+        step.classList.remove('active', 'completed');
+        
+        if (stepNum < currentStep) {
+          step.classList.add('completed');
+        } else if (stepNum === currentStep) {
+          step.classList.add('active');
+        }
+      });
+    }
+
+    function updateNavigation() {
+      // Update button visibility
+      btnBack.style.display = currentStep > 1 ? 'flex' : 'none';
+      btnNext.style.display = currentStep < totalSteps ? 'flex' : 'none';
+      btnSubmit.style.display = currentStep === totalSteps ? 'flex' : 'none';
+      
+      // Update button text for last step
+      if (currentStep === totalSteps - 1) {
+        btnNext.innerHTML = 'Final Step <i class="fas fa-arrow-right"></i>';
+      } else if (currentStep === totalSteps) {
+        btnNext.style.display = 'none';
+      }
+    }
+
+    function validateStep(step) {
+      hideMessages();
+      
+      switch(step) {
+        case 1:
+          const firstName = document.getElementById('firstName').value.trim();
+          const lastName = document.getElementById('lastName').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const country = document.getElementById('country').value;
+          
+          if (!firstName || !lastName || !email || !country) {
+            showError('Please fill in all required fields in the Personal Information section.');
+            return false;
+          }
+          
+          if (!isValidEmail(email)) {
+            showError('Please enter a valid email address.');
+            return false;
+          }
+          
+          return true;
+          
+        case 2:
+          const userType = userTypeInput.value;
+          
+          if (!userType) {
+            showError('Please select your account type.');
+            return false;
+          }
+          
+          return true;
+          
+        case 3:
+          const password = passwordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+          
+          if (!password || !confirmPassword) {
+            showError('Please fill in all password fields.');
+            return false;
+          }
+          
+          if (password !== confirmPassword) {
+            showError('Passwords do not match. Please make sure both passwords are identical.');
+            return false;
+          }
+          
+          const strength = checkPasswordStrength(password);
+          if (strength.level === 'weak') {
+            showError('Please choose a stronger password. Use at least 8 characters with a mix of letters, numbers, and symbols.');
+            return false;
+          }
+          
+          return true;
+          
+        default:
+          return true;
+      }
+    }
+
+    function validateAllSteps() {
+      return validateStep(1) && validateStep(2) && validateStep(3);
+    }
+
+    function collectFormData() {
+      // Personal Information
+      formData.personal = {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        country: document.getElementById('country').value
+      };
+      
+      // Account Information
+      formData.account = {
+        userType: userTypeInput.value,
+        organization: document.getElementById('organization').value.trim(),
+        profession: document.getElementById('profession').value.trim()
+      };
+      
+      // Security Information
+      formData.security = {
+        password: passwordInput.value,
+        termsAccepted: termsCheckbox.classList.contains('checked'),
+        newsletterSubscribed: newsletterCheckbox.classList.contains('checked')
+      };
+      
+      saveFormData();
+    }
+
+    function populateFormData() {
+      // Personal Information
+      if (formData.personal.firstName) document.getElementById('firstName').value = formData.personal.firstName;
+      if (formData.personal.lastName) document.getElementById('lastName').value = formData.personal.lastName;
+      if (formData.personal.email) document.getElementById('email').value = formData.personal.email;
+      if (formData.personal.phone) document.getElementById('phone').value = formData.personal.phone;
+      if (formData.personal.country) document.getElementById('country').value = formData.personal.country;
+      
+      // Account Information
+      if (formData.account.userType) {
+        userTypeInput.value = formData.account.userType;
+        document.querySelector(`.user-type-option[data-type="${formData.account.userType}"]`).classList.add('selected');
+      }
+      if (formData.account.organization) document.getElementById('organization').value = formData.account.organization;
+      if (formData.account.profession) document.getElementById('profession').value = formData.account.profession;
+      
+      // Security Information
+      if (formData.security.termsAccepted) termsCheckbox.classList.add('checked');
+      if (formData.security.newsletterSubscribed) newsletterCheckbox.classList.add('checked');
+    }
+
+    function saveFormData() {
+      localStorage.setItem('nyayasulabhSignupData', JSON.stringify(formData));
+    }
+
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      let feedback = '';
+      let color = '';
+      let level = 'weak';
+      
+      if (password.length >= 8) strength += 1;
+      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 1;
+      if (/\d/.test(password)) strength += 1;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+      
+      switch(strength) {
+        case 0:
+        case 1:
+          feedback = 'Weak';
+          color = 'var(--error)';
+          level = 'weak';
+          break;
+        case 2:
+          feedback = 'Fair';
+          color = '#F4B400';
+          level = 'medium';
+          break;
+        case 3:
+          feedback = 'Good';
+          color = '#0F9D58';
+          level = 'medium';
+          break;
+        case 4:
+          feedback = 'Strong';
+          color = 'var(--success)';
+          level = 'strong';
+          break;
+      }
+      
+      return { text: feedback, color: color, level: level };
+    }
+
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function showError(message) {
+      document.getElementById('errorText').textContent = message;
+      errorMessage.classList.add('show');
+      signupForm.classList.add('shake');
+      
+      setTimeout(() => {
+        signupForm.classList.remove('shake');
+      }, 500);
+      
+      // Scroll to top of form
+      document.querySelector('.signup-card').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    function showSuccess(message) {
+      document.getElementById('successText').textContent = message;
+      successMessage.classList.add('show');
+    }
+
+    function hideMessages() {
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+    }
+
+    function simulateSignup() {
+      // Show loading state
+      btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+      btnSubmit.disabled = true;
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        // Success scenario
+        showSuccess('Account created successfully! Redirecting to dashboard...');
+        
+        // Create User Session
+        const sessionData = {
+          isLoggedIn: true,
+          sessionId: 'sess_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+          email: formData.personal.email,
+          name: (formData.personal.firstName + ' ' + formData.personal.lastName).trim(),
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem('nyayaSession', JSON.stringify(sessionData));
+
+        // Clear saved form data
+        localStorage.removeItem('nyayasulabhSignupData');
+        
+        // Simulate redirect to dashboard
+        setTimeout(() => {
+          window.location.href = 'interface.html';
+        }, 2000);
+        
+      }, 2000);
+    }
+
+    // Auto-save form data on input
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('input', saveFormData);
+    });
+
+    // Auto-save on select change
+    document.getElementById('country').addEventListener('change', saveFormData);
+  </script>
+</body>
+</html>
