@@ -784,44 +784,46 @@
       submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Signing In...`;
       submitButton.disabled = true;
       
-      // Simulate API call delay
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem('nyayasulabhUsers') || '[]');
+      
+      // Find user by email
+      const user = users.find(u => u.email === email);
+      
+      // Check if user exists and password matches
+      if (!user) {
+        showError('Invalid email or password');
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+        return;
+      }
+      
+      if (user.password !== password) {
+        showError('Invalid email or password');
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+        return;
+      }
+      
+      // Create session data
+      const sessionData = {
+        isLoggedIn: true,
+        sessionId: 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        email: user.email,
+        name: user.name,
+        timestamp: new Date().getTime()
+      };
+      
+      // Success
+      showSuccess('Login successful! Redirecting to dashboard...');
+      localStorage.setItem('nyayaSession', JSON.stringify(sessionData));
+      
+      if (rememberCheckbox.classList.contains('checked')) {
+        localStorage.setItem('savedEmail', email);
+      }
+      
       setTimeout(() => {
-        // Demo credentials for testing
-        const demoCredentials = {
-          email: 'demo@nyayasulabh.com',
-          password: 'demo123'
-        };
-        
-        // Check credentials
-        if (email === demoCredentials.email && password === demoCredentials.password) {
-          // Successful login
-          showSuccess('Login successful! Redirecting to dashboard...');
-          
-          // Create User Session
-          const sessionData = {
-            isLoggedIn: true,
-            sessionId: 'sess_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-            email: email,
-            name: 'Demo User',
-            timestamp: new Date().getTime()
-          };
-          localStorage.setItem('nyayaSession', JSON.stringify(sessionData));
-
-          // Save to localStorage if "Remember me" is checked
-          if (rememberCheckbox.classList.contains('checked')) {
-            localStorage.setItem('savedEmail', email);
-          }
-          
-          // Simulate redirect to dashboard
-          setTimeout(() => {
-            window.location.href = 'interface.html';
-          }, 1500);
-        } else {
-          // Failed login
-          showError('Invalid email or password. Try: demo@nyayasulabh.com / demo123');
-          submitButton.innerHTML = originalText;
-          submitButton.disabled = false;
-        }
+        window.location.href = 'interface.html';
       }, 1500);
     }
 
@@ -839,8 +841,7 @@
     // Create Account Link
     document.querySelector('.signup-link').addEventListener('click', function(e) {
       e.preventDefault();
-      alert('In a real application, this would redirect to the signup page.');
-      // window.location.href = 'signup.html'; // Uncomment for real redirect
+      window.location.href = 'signup.html';
     });
   </script>
 </body>

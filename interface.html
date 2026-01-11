@@ -1259,6 +1259,9 @@
     let selectedFileData = null;
     let isUploading = false;
     let chatHistory = [];
+    
+    // n8n Webhook URL
+    const N8N_WEBHOOK_URL = 'https://genaibuildathon.app.n8n.cloud/webhook/8e069dee-dabc-4363-970e-8800e1eb7fc5';
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
@@ -1411,17 +1414,18 @@
       showTypingIndicator();
       
       try {
-        const url = new URL('https://dirghawork.app.n8n.cloud/webhook-test/834dc69c-964d-41fe-9646-b7b869d675fa');
-        url.searchParams.append('message', message);
-        
-        const response = await fetch(url, {
+        const response = await fetch(N8N_WEBHOOK_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
+          body: JSON.stringify({ message: message })
         });
 
-        if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+        }
 
         let responseData = await response.json();
         let aiResponse = '';
@@ -1642,28 +1646,54 @@
       
       try {
         const formData = new FormData();
-        formData.append('file', selectedFileData.file);
-        formData.append('document', selectedFileData.file);
+        formData.append('data', selectedFileData.file);
         formData.append('message', `Uploaded document: ${selectedFileData.name}`);
 
-        const response = await fetch('https://dirghawork.app.n8n.cloud/webhook-test/834dc69c-964d-41fe-9646-b7b869d675fa', {
+        const response = await fetch(N8N_WEBHOOK_URL, {
           method: 'POST',
           body: formData
         });
 
-        if (!response.ok) throw new Error('Upload failed');
+        // Get response as text first to handle both JSON and non-JSON responses
+        const responseText = await response.text();
+        console.log('Raw response status:', response.status);
+        console.log('Raw response text:', responseText);
         
-        // Get the response data
+        if (!response.ok) {
+          let errorData;
+          try {
+            errorData = JSON.parse(responseText);
+          } catch (e) {
+            errorData = { error: responseText || `Server error: ${response.status}` };
+          }
+          throw new Error(errorData.message || errorData.error || `Upload failed with status ${response.status}`);
+        }
+        
+        // Parse response data
         let responseData;
+        if (!responseText || responseText.trim() === '') {
+          // Empty response - n8n might have processed but didn't return data
+          console.warn('Empty response from n8n');
+          addMessage('user', `Uploaded document: ${selectedFileData.name}`, selectedFileData);
+          addMessage('ai', "Document uploaded successfully! The file has been received and is being processed. You can now ask questions about the document.");
+          isUploading = false;
+          closeUploadModal();
+          confirmUpload.innerHTML = 'Upload Document';
+          confirmUpload.disabled = true;
+          return;
+        }
+        
         try {
-          responseData = await response.json();
+          responseData = JSON.parse(responseText);
         } catch (jsonError) {
           console.error('JSON parsing error:', jsonError);
-          throw new Error('Invalid response from server');
+          console.error('Response text that failed to parse:', responseText);
+          // If it's not JSON, treat it as plain text response
+          responseData = { text: responseText };
         }
         
         // Debug: Log the response structure
-        console.log('API Response:', responseData);
+        console.log('Parsed response data:', responseData);
 
         // Add document message to chat
         addMessage('user', `Uploaded document: ${selectedFileData.name}`, selectedFileData);
@@ -1686,6 +1716,14 @@
         else if (responseData && responseData.content && responseData.content.parts && 
                 Array.isArray(responseData.content.parts) && responseData.content.parts.length > 0) {
           aiResponse = responseData.content.parts[0].text || '';
+        }
+        // Handle Gemini response structure (candidates array)
+        else if (responseData.candidates && Array.isArray(responseData.candidates) && responseData.candidates.length > 0) {
+             const firstCandidate = responseData.candidates[0];
+             if (firstCandidate.content && firstCandidate.content.parts && 
+                 Array.isArray(firstCandidate.content.parts) && firstCandidate.content.parts.length > 0) {
+                 aiResponse = firstCandidate.content.parts[0].text || '';
+             }
         }
         // Fallback: try to find any text response in the object
         else if (responseData.response || responseData.message || responseData.summary || responseData.text) {
@@ -1710,7 +1748,20 @@
         
       } catch (error) {
         console.error('Upload error:', error);
-        addMessage('ai', "Sorry, I encountered an error uploading or analyzing the document. Error: " + error.message);
+        console.error('Error stack:', error.stack);
+        
+        // Add user message about the upload attempt
+        addMessage('user', `Uploaded document: ${selectedFileData.name}`, selectedFileData);
+        
+        // Show helpful error message
+        let errorMsg = "Sorry, I encountered an error uploading or analyzing the document.";
+        if (error.message) {
+          errorMsg += " Error: " + error.message;
+        }
+        if (error.cause) {
+          errorMsg += " Details: " + error.cause;
+        }
+        addMessage('ai', errorMsg);
       } finally {
         // Reset upload state
         isUploading = false;

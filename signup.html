@@ -1391,29 +1391,55 @@
       btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
       btnSubmit.disabled = true;
       
-      // Simulate API call delay
+      // Get existing users from localStorage
+      const users = JSON.parse(localStorage.getItem('nyayasulabhUsers') || '[]');
+      
+      // Check if email already exists
+      const emailExists = users.some(u => u.email === formData.personal.email);
+      if (emailExists) {
+        showError('Email already exists. Please use a different email or login instead.');
+        btnSubmit.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        btnSubmit.disabled = false;
+        return;
+      }
+      
+      // Create new user object
+      const newUser = {
+        id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        email: formData.personal.email,
+        password: formData.security.password, // In production, this should be hashed
+        name: (formData.personal.firstName + ' ' + formData.personal.lastName).trim(),
+        firstName: formData.personal.firstName,
+        lastName: formData.personal.lastName,
+        phone: formData.personal.phone,
+        country: formData.personal.country,
+        userType: formData.account.userType,
+        organization: formData.account.organization,
+        profession: formData.account.profession,
+        newsletterSubscribed: formData.security.newsletterSubscribed,
+        createdAt: new Date().toISOString()
+      };
+      
+      // Add user to localStorage
+      users.push(newUser);
+      localStorage.setItem('nyayasulabhUsers', JSON.stringify(users));
+      
+      // Create session data
+      const sessionData = {
+        isLoggedIn: true,
+        sessionId: 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        email: newUser.email,
+        name: newUser.name,
+        timestamp: new Date().getTime()
+      };
+      
+      // Success
+      showSuccess('Account created successfully! Redirecting to dashboard...');
+      localStorage.setItem('nyayaSession', JSON.stringify(sessionData));
+      localStorage.removeItem('nyayasulabhSignupData');
+      
       setTimeout(() => {
-        // Success scenario
-        showSuccess('Account created successfully! Redirecting to dashboard...');
-        
-        // Create User Session
-        const sessionData = {
-          isLoggedIn: true,
-          sessionId: 'sess_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-          email: formData.personal.email,
-          name: (formData.personal.firstName + ' ' + formData.personal.lastName).trim(),
-          timestamp: new Date().getTime()
-        };
-        localStorage.setItem('nyayaSession', JSON.stringify(sessionData));
-
-        // Clear saved form data
-        localStorage.removeItem('nyayasulabhSignupData');
-        
-        // Simulate redirect to dashboard
-        setTimeout(() => {
-          window.location.href = 'interface.html';
-        }, 2000);
-        
+        window.location.href = 'interface.html';
       }, 2000);
     }
 
